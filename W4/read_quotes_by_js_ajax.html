@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html id="quotes_xml_ajax" xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+   <head>
+      <title>Quotes XML to HTML using PHP DOMDocument()</title>
+      <meta charset='utf-8' />
+      <style>
+         tr:nth-child(odd){
+         background-color:#eeeeee;
+         }
+         table {
+         width:80%;
+         text-align:left;
+         margin: auto;
+         }
+         td {
+         vertical-align:top;
+         }
+      </style>
+      <script>
+         function loadXMLDoc(doc) {
+           if (window.XMLHttpRequest) {
+             xhttp=new XMLHttpRequest();
+           } else {
+             xhttp=new ActiveXObject("Microsoft.XMLHTTP");
+           }
+           xhttp.open("GET",doc,false);
+           xhttp.send();
+           return xhttp.responseXML;
+         } 
+      </script>
+   </head>
+   <body>
+      <table>
+         <tr style="background-color: #bbbbbb;">
+            <th>category</th>
+            <th>quote</th>
+            <th>author</th>
+            <th>dob-dod</th>
+            <th>image</th>
+         </tr>
+         <script>
+            xmlDoc=loadXMLDoc("quotes_13+img.xml");
+            
+            var quote = xmlDoc.getElementsByTagName("quote");
+            
+            for (i=0; i<quote.length; i++) { 
+              document.write("<tr>");
+              document.write("<td>" + quote[i].getElementsByTagName('text')[0].getAttribute('category') + "</td>");
+              document.write("<td>" + quote[i].getElementsByTagName('text')[0].firstChild.nodeValue + "</td>");
+              document.write("<td><a href=\"" + quote[i].getElementsByTagName('source')[0].firstChild.nodeValue +   +
+            	quote[i].getElementsByTagName('source')[0].firstChild.nodeValue + "</a></td>");
+              document.write("<td>" + quote[i].getElementsByTagName('dob-dod')[0].firstChild.nodeValue+"</td>"); 
+              document.write("</td>");
+              if (quote[i].getElementsByTagName('wpimg')[0].hasChildNodes()) {
+            	document.write("<td><img src=\"" + quote[i].getElementsByTagName('wpimg')[0].firstChild.nodeValue + "\" width=\"80\" /></td>");
+              }
+              document.write("</tr>");
+            }
+         </script>
+      </table>
+   </body>
+</html>
